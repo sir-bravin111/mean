@@ -1,0 +1,1336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>🌿 Sir Bravin · Nature & Innovation</title>
+
+    <!-- ===== Fonts & Icons ===== -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+    <style>
+        /* ===== RESET & BASE ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #0a0c14;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* ===== NATURE BACKGROUND with WATERFALL ===== */
+        .nature-bg {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            background:
+                linear-gradient(180deg, rgba(10, 12, 20, 0.55) 0%, rgba(10, 12, 20, 0.75) 100%),
+                url('https://images.unsplash.com/photo-1432405972618-c60b0225b8f9?w=1920&q=80');
+            background-size: cover;
+            background-position: center 30%;
+            background-repeat: no-repeat;
+            filter: saturate(1.1) contrast(1.05);
+            animation: slowZoom 40s ease-in-out infinite alternate;
+        }
+
+        @keyframes slowZoom {
+            0% {
+                transform: scale(1);
+            }
+            100% {
+                transform: scale(1.05);
+            }
+        }
+
+        /* subtle overlay particles (waterfall mist effect) */
+        .nature-bg::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at 50% 80%, rgba(255, 255, 255, 0.04) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        /* ===== GLITTERING STARS CANVAS ===== */
+        #stars-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 0; /* above nature-bg, behind app */
+            pointer-events: none;
+            display: block;
+        }
+
+        /* ===== SCROLLBAR ===== */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.03);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(124, 58, 237, 0.3);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(124, 58, 237, 0.5);
+        }
+
+        /* ===== GLASS CARD ===== */
+        .glass {
+            background: rgba(10, 12, 20, 0.55);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.5), inset 0 0 0 1px rgba(255, 255, 255, 0.02);
+        }
+        .glass-light {
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* ===== WRAPPER ===== */
+        #app {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: 540px;
+            padding: 16px;
+            transition: all 0.4s ease;
+            max-height: 100vh;
+            overflow-y: auto;
+        }
+
+        /* ===== SIGN-IN CARD ===== */
+        #signin-card {
+            padding: 48px 36px 40px;
+            text-align: center;
+            transition: opacity 0.6s ease, transform 0.6s ease, max-height 0.6s ease;
+            border-radius: 40px;
+            max-height: 700px;
+            overflow: hidden;
+        }
+        #signin-card.hidden {
+            opacity: 0;
+            transform: scale(0.94) translateY(30px);
+            pointer-events: none;
+            max-height: 0;
+            padding: 0 36px;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        .signin-icon {
+            font-size: 56px;
+            margin-bottom: 4px;
+            display: inline-block;
+            animation: pulseGlow 3s ease-in-out infinite;
+            filter: drop-shadow(0 0 30px rgba(124, 58, 237, 0.3));
+        }
+        @keyframes pulseGlow {
+            0%,
+            100% {
+                transform: scale(1);
+                filter: drop-shadow(0 0 20px rgba(124, 58, 237, 0.3));
+            }
+            50% {
+                transform: scale(1.06);
+                filter: drop-shadow(0 0 50px rgba(124, 58, 237, 0.5));
+            }
+        }
+
+        #signin-card h1 {
+            font-size: 30px;
+            font-weight: 800;
+            font-family: 'Playfair Display', serif;
+            background: linear-gradient(135deg, #a78bfa, #f472b6, #34d399);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 2px;
+            letter-spacing: -0.5px;
+        }
+        #signin-card p.sub {
+            color: #94a3b8;
+            font-size: 14px;
+            margin-bottom: 28px;
+            letter-spacing: 0.3px;
+        }
+
+        .form-group {
+            text-align: left;
+            margin-bottom: 16px;
+        }
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: #cbd5e1;
+            margin-bottom: 5px;
+            letter-spacing: 0.3px;
+        }
+        .form-group .input-wrap {
+            position: relative;
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+        .form-group .input-wrap:focus-within {
+            border-color: #7c3aed;
+            box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.12);
+        }
+        .form-group .input-wrap i {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #64748b;
+            font-size: 15px;
+        }
+        .form-group .input-wrap input {
+            width: 100%;
+            padding: 15px 16px 15px 46px;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: #f1f5f9;
+            font-size: 15px;
+            font-weight: 400;
+        }
+        .form-group .input-wrap input::placeholder {
+            color: #475569;
+            font-weight: 300;
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 16px;
+            font-size: 16px;
+            font-weight: 700;
+            color: #fff;
+            background: linear-gradient(135deg, #7c3aed, #ec4899);
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.3s;
+            margin-top: 6px;
+            letter-spacing: 0.5px;
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 32px rgba(124, 58, 237, 0.35);
+        }
+        .btn-primary:active {
+            transform: scale(0.97);
+        }
+        .btn-primary::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.12), transparent);
+            pointer-events: none;
+        }
+
+        .error-msg {
+            color: #f87171;
+            font-size: 13px;
+            font-weight: 500;
+            margin-top: 12px;
+            min-height: 20px;
+        }
+
+        .signin-footer {
+            margin-top: 24px;
+            font-size: 13px;
+            color: #64748b;
+        }
+        .signin-footer strong {
+            color: #a78bfa;
+            font-weight: 600;
+        }
+
+        /* ===== DASHBOARD ===== */
+        #dashboard {
+            display: none;
+            animation: fadeSlideUp 0.7s ease;
+        }
+        #dashboard.active {
+            display: block;
+        }
+
+        @keyframes fadeSlideUp {
+            0% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .dash-card {
+            padding: 28px 24px 32px;
+            border-radius: 32px;
+            margin-bottom: 20px;
+            transition: background 0.3s;
+        }
+
+        /* ===== DASHBOARD HEADER ===== */
+        .dash-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .dash-header .user {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+        .dash-header .avatar {
+            width: 54px;
+            height: 54px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #7c3aed, #ec4899);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 700;
+            color: #fff;
+            box-shadow: 0 8px 28px rgba(124, 58, 237, 0.3);
+            flex-shrink: 0;
+        }
+        .dash-header .user-info h3 {
+            font-size: 19px;
+            font-weight: 700;
+            font-family: 'Playfair Display', serif;
+            background: linear-gradient(135deg, #c084fc, #f472b6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .dash-header .user-info p {
+            font-size: 12px;
+            color: #94a3b8;
+        }
+        .btn-logout {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            color: #94a3b8;
+            padding: 9px 18px;
+            border-radius: 30px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .btn-logout:hover {
+            background: rgba(239, 68, 68, 0.12);
+            color: #f87171;
+            border-color: rgba(239, 68, 68, 0.15);
+        }
+
+        /* ===== MEMBER COUNTER ===== */
+        .member-counter {
+            text-align: center;
+            padding: 28px 20px 30px;
+            background: radial-gradient(ellipse at 30% 30%, rgba(124, 58, 237, 0.06), transparent 70%);
+            border-radius: 28px;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+        }
+        .member-counter .number {
+            font-size: 60px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #c084fc, #34d399);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1;
+            letter-spacing: -2px;
+        }
+        .member-counter .label {
+            font-size: 15px;
+            font-weight: 500;
+            color: #94a3b8;
+            margin-top: 4px;
+            letter-spacing: 0.5px;
+        }
+        .member-counter .label i {
+            margin-right: 6px;
+            color: #34d399;
+        }
+        .member-counter .sub-label {
+            font-size: 12px;
+            color: #64748b;
+            margin-top: 4px;
+        }
+
+        /* ===== SECTIONS ABOUT SIR BRAVIN ===== */
+        .section-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: 'Playfair Display', serif;
+        }
+        .section-title i {
+            color: #7c3aed;
+            font-size: 20px;
+        }
+        .section-title .accent-line {
+            flex: 1;
+            height: 2px;
+            background: linear-gradient(90deg, rgba(124, 58, 237, 0.3), transparent);
+        }
+
+        /* bio */
+        .bio-text {
+            color: #cbd5e1;
+            line-height: 1.8;
+            font-size: 14.5px;
+        }
+        .bio-text strong {
+            color: #a78bfa;
+        }
+        .bio-highlight {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 12px;
+        }
+        .bio-highlight span {
+            background: rgba(124, 58, 237, 0.08);
+            padding: 4px 16px;
+            border-radius: 40px;
+            font-size: 12px;
+            font-weight: 500;
+            color: #a78bfa;
+            border: 1px solid rgba(124, 58, 237, 0.08);
+        }
+
+        /* stats grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+        .stats-grid .stat-item {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 16px;
+            padding: 14px 6px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            transition: all 0.3s;
+        }
+        .stats-grid .stat-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+            transform: translateY(-2px);
+        }
+        .stats-grid .stat-item .num {
+            font-size: 20px;
+            font-weight: 700;
+            color: #c084fc;
+        }
+        .stats-grid .stat-item .lbl {
+            font-size: 10px;
+            color: #64748b;
+            margin-top: 2px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* timeline / journey */
+        .timeline {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            margin-top: 4px;
+        }
+        .timeline-item {
+            display: flex;
+            gap: 14px;
+            align-items: flex-start;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 16px;
+            border-left: 3px solid #7c3aed;
+            transition: background 0.3s;
+        }
+        .timeline-item:hover {
+            background: rgba(255, 255, 255, 0.04);
+        }
+        .timeline-item .year {
+            font-weight: 700;
+            color: #a78bfa;
+            font-size: 14px;
+            min-width: 60px;
+            flex-shrink: 0;
+        }
+        .timeline-item .desc {
+            color: #cbd5e1;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        .timeline-item .desc i {
+            color: #34d399;
+            margin-right: 4px;
+        }
+
+        /* philosophy quote */
+        .philosophy-block {
+            padding: 20px 24px;
+            background: linear-gradient(135deg, rgba(124, 58, 237, 0.05), rgba(52, 211, 153, 0.04));
+            border-radius: 24px;
+            border: 1px solid rgba(124, 58, 237, 0.06);
+            font-style: italic;
+            color: #e2e8f0;
+            font-size: 15px;
+            line-height: 1.7;
+            position: relative;
+        }
+        .philosophy-block::before {
+            content: '\201C';
+            font-size: 48px;
+            color: rgba(124, 58, 237, 0.15);
+            position: absolute;
+            top: -8px;
+            left: 12px;
+            font-family: 'Playfair Display', serif;
+        }
+        .philosophy-block .author {
+            display: block;
+            margin-top: 10px;
+            font-style: normal;
+            font-weight: 600;
+            color: #a78bfa;
+            font-size: 14px;
+        }
+
+        /* projects */
+        .project-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        .project-card {
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 16px;
+            padding: 16px 14px;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            transition: all 0.3s;
+            text-align: center;
+        }
+        .project-card:hover {
+            background: rgba(255, 255, 255, 0.04);
+            transform: translateY(-3px);
+            border-color: rgba(124, 58, 237, 0.1);
+        }
+        .project-card .icon {
+            font-size: 28px;
+            margin-bottom: 4px;
+            display: block;
+        }
+        .project-card .name {
+            font-weight: 600;
+            color: #e2e8f0;
+            font-size: 14px;
+        }
+        .project-card .desc {
+            font-size: 11px;
+            color: #64748b;
+            margin-top: 2px;
+        }
+
+        /* skills */
+        .skills-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .skills-grid .skill-tag {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 6px 16px;
+            border-radius: 40px;
+            font-size: 12px;
+            font-weight: 500;
+            color: #e2e8f0;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            transition: all 0.3s;
+            cursor: default;
+        }
+        .skills-grid .skill-tag:hover {
+            background: rgba(124, 58, 237, 0.10);
+            border-color: rgba(124, 58, 237, 0.12);
+            transform: translateY(-2px);
+            color: #c084fc;
+        }
+        .skills-grid .skill-tag i {
+            margin-right: 5px;
+            color: #7c3aed;
+        }
+
+        /* social */
+        .social-links {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 18px;
+            border-radius: 40px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            color: #cbd5e1;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        .social-links a:hover {
+            background: rgba(124, 58, 237, 0.06);
+            border-color: rgba(124, 58, 237, 0.10);
+            color: #c084fc;
+            transform: translateY(-2px);
+        }
+        .social-links a i {
+            font-size: 15px;
+        }
+
+        .footer-note {
+            margin-top: 16px;
+            font-size: 12px;
+            color: #475569;
+            border-top: 1px solid rgba(255, 255, 255, 0.03);
+            padding-top: 14px;
+            text-align: center;
+            letter-spacing: 0.3px;
+        }
+        .footer-note i {
+            color: #ec4899;
+        }
+        .footer-note strong {
+            color: #a78bfa;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 500px) {
+            #app {
+                padding: 10px;
+                max-height: 100vh;
+            }
+            #signin-card {
+                padding: 32px 18px 28px;
+            }
+            .dash-card {
+                padding: 20px 16px 24px;
+            }
+            .member-counter .number {
+                font-size: 44px;
+            }
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .project-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
+            }
+            .project-card {
+                padding: 12px 10px;
+            }
+            .project-card .icon {
+                font-size: 22px;
+            }
+            .timeline-item {
+                flex-direction: column;
+                gap: 4px;
+                padding: 10px 14px;
+            }
+            .timeline-item .year {
+                min-width: auto;
+                font-size: 13px;
+            }
+            .dash-header {
+                flex-direction: row;
+                flex-wrap: wrap;
+            }
+            .btn-logout {
+                padding: 7px 14px;
+                font-size: 12px;
+            }
+            .bio-highlight span {
+                font-size: 11px;
+                padding: 3px 12px;
+            }
+            .social-links a {
+                padding: 6px 14px;
+                font-size: 12px;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .project-grid {
+                grid-template-columns: 1fr;
+            }
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            #signin-card h1 {
+                font-size: 24px;
+            }
+        }
+
+        /* shake animation */
+        @keyframes shake {
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+            20% {
+                transform: translateX(-10px);
+            }
+            40% {
+                transform: translateX(10px);
+            }
+            60% {
+                transform: translateX(-6px);
+            }
+            80% {
+                transform: translateX(6px);
+            }
+        }
+        .shake {
+            animation: shake 0.4s ease;
+        }
+
+        /* floating badge */
+        .floating-badge {
+            display: inline-block;
+            background: rgba(52, 211, 153, 0.12);
+            color: #34d399;
+            padding: 2px 14px;
+            border-radius: 40px;
+            font-size: 11px;
+            font-weight: 600;
+            border: 1px solid rgba(52, 211, 153, 0.08);
+            letter-spacing: 0.3px;
+        }
+
+        /* ===== SONG DOWNLOADER CUSTOM STYLES ===== */
+        .song-downloader-card {
+            border: 1px solid rgba(52, 211, 153, 0.25);
+            background: linear-gradient(135deg, rgba(124, 58, 237, 0.08), rgba(52, 211, 153, 0.05));
+            position: relative;
+            overflow: hidden;
+        }
+        .song-downloader-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(52, 211, 153, 0.03) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        .btn-download {
+            display: inline-block;
+            width: 100%;
+            text-align: center;
+            padding: 16px 24px;
+            background: linear-gradient(135deg, #34d399, #7c3aed);
+            border-radius: 16px;
+            color: #fff;
+            font-weight: 700;
+            text-decoration: none;
+            font-size: 18px;
+            letter-spacing: 0.5px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 8px 24px rgba(52, 211, 153, 0.15);
+            border: none;
+            cursor: pointer;
+        }
+        .btn-download:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 16px 40px rgba(52, 211, 153, 0.25);
+        }
+        .btn-download:active {
+            transform: scale(0.98);
+        }
+        .link-hint {
+            color: #64748b;
+            font-size: 12px;
+            margin-top: 12px;
+            text-align: center;
+            word-break: break-all;
+        }
+        .link-hint i {
+            color: #34d399;
+            margin-right: 4px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ===== NATURE BACKGROUND (Waterfall in Forest) ===== -->
+    <div class="nature-bg"></div>
+
+    <!-- ===== GLITTERING STARS CANVAS ===== -->
+    <canvas id="stars-canvas"></canvas>
+
+    <!-- ===== APP ===== -->
+    <div id="app">
+
+        <!-- ====== SIGN-IN CARD ====== -->
+        <div id="signin-card" class="glass">
+            <div class="signin-icon">🌿</div>
+            <h1>Sir Bravin</h1>
+            <p class="sub">Sign in · explore the forest of innovation</p>
+
+            <form id="signin-form" autocomplete="off">
+                <div class="form-group">
+                    <label for="username"><i class="fas fa-user" style="margin-right:6px;"></i> Username</label>
+                    <div class="input-wrap">
+                        <i class="fas fa-user"></i>
+                        <input type="text" id="username" placeholder="Enter your username" required />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="password"><i class="fas fa-lock" style="margin-right:6px;"></i> Password</label>
+                    <div class="input-wrap">
+                        <i class="fas fa-key"></i>
+                        <input type="password" id="password" placeholder="Enter your password" required />
+                    </div>
+                </div>
+                <button type="submit" class="btn-primary">
+                    <i class="fas fa-leaf" style="margin-right:10px;"></i> Sign In
+                </button>
+                <div class="error-msg" id="error-msg"></div>
+            </form>
+
+            <div class="signin-footer">
+                <i class="fas fa-tree" style="margin-right:4px;color:#34d399;"></i>
+                Nature · <strong>Sir Bravin</strong> · v3.0
+            </div>
+        </div>
+
+        <!-- ====== DASHBOARD ====== -->
+        <div id="dashboard">
+
+            <!-- ===== HEADER ===== -->
+            <div class="dash-card glass">
+                <div class="dash-header">
+                    <div class="user">
+                        <div class="avatar" id="avatar-letter">B</div>
+                        <div class="user-info">
+                            <h3 id="display-name">Sir Bravin</h3>
+                            <p><i class="fas fa-circle" style="color:#4ade80;font-size:9px;margin-right:6px;"></i>Online · <span class="floating-badge"><i class="fas fa-leaf"></i> nature mode</span></p>
+                        </div>
+                    </div>
+                    <button class="btn-logout" id="logout-btn">
+                        <i class="fas fa-sign-out-alt" style="margin-right:6px;"></i> Exit
+                    </button>
+                </div>
+            </div>
+
+            <!-- ===== MEMBER COUNTER ===== -->
+            <div class="dash-card glass">
+                <div class="member-counter">
+                    <div class="number" id="member-count">0</div>
+                    <div class="label"><i class="fas fa-users"></i> Active Members</div>
+                    <div class="sub-label">🌱 growing with every sign-in</div>
+                </div>
+            </div>
+
+            <!-- ====================================================== -->
+            <!-- ===== NEW: SONG DOWNLOADER SECTION ===== -->
+            <!-- ====================================================== -->
+            <div class="dash-card glass song-downloader-card">
+                <div class="section-title">
+                    <i class="fas fa-music" style="color: #34d399;"></i> sir bravin song download get here
+                    <span class="accent-line"></span>
+                </div>
+                <p style="color: #cbd5e1; margin-bottom: 18px; line-height: 1.7; position: relative; z-index: 1;">
+                    <i class="fas fa-download" style="color: #34d399; margin-right: 8px;"></i>
+                    Access the latest tracks, exclusive mixes, and all your favorite Sir Bravin songs in one place. Click below to start downloading.
+                </p>
+                <a href="https://bravine-tan.vercel.app" target="_blank" rel="noopener noreferrer" class="btn-download">
+                    <i class="fas fa-play-circle" style="margin-right: 10px;"></i> Visit Song Downloader
+                </a>
+                <div class="link-hint">
+                    <i class="fas fa-link"></i> bravine-tan.vercel.app
+                </div>
+            </div>
+            <!-- ===== END SONG DOWNLOADER SECTION ===== -->
+
+            <!-- ===== ABOUT SIR BRAVIN ===== -->
+            <div class="dash-card glass">
+                <div class="section-title">
+                    <i class="fas fa-feather-alt"></i> About Sir Bravin
+                    <span class="accent-line"></span>
+                </div>
+                <p class="bio-text">
+                    <strong>Sir Bravin</strong> is a visionary developer, creative thinker, and nature enthusiast.
+                    With a deep love for both technology and the natural world, he crafts digital experiences
+                    that are not only functional but also <strong>human</strong> — rooted in empathy, beauty, and purpose.
+                    His journey began in the quiet forests of his hometown, where he learned that the best
+                    code, like nature, is elegant, resilient, and endlessly evolving.
+                </p>
+                <div class="bio-highlight">
+                    <span><i class="fas fa-code"></i> Full-stack</span>
+                    <span><i class="fas fa-paint-brush"></i> UI/UX</span>
+                    <span><i class="fas fa-mountain"></i> Nature lover</span>
+                    <span><i class="fas fa-heart"></i> Human-first</span>
+                </div>
+            </div>
+
+            <!-- ===== STATS ===== -->
+            <div class="dash-card glass">
+                <div class="section-title">
+                    <i class="fas fa-chart-simple"></i> Impact
+                    <span class="accent-line"></span>
+                </div>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="num">12+</div>
+                        <div class="lbl">Projects</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="num">4.9★</div>
+                        <div class="lbl">Rating</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="num">∞</div>
+                        <div class="lbl">Passion</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="num">8</div>
+                        <div class="lbl">Awards</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== JOURNEY / TIMELINE ===== -->
+            <div class="dash-card glass">
+                <div class="section-title">
+                    <i class="fas fa-road"></i> Journey
+                    <span class="accent-line"></span>
+                </div>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <span class="year">2020</span>
+                        <span class="desc"><i class="fas fa-seedling"></i>Is when I started my first coding at the age of 15· first open-source contribution,web desinging and make my fast whatsapp bot named TOXIC LOVER MD</span>
+                    </div>
+                    <div class="timeline-item">
+                        <span class="year">2021</span>
+                        <span class="desc"><i class="fas fa-rocket"></i> Launched another bot TOXIC LOVER-V2 first startup — <strong>AND APIS</strong></span>
+                    </div>
+                    <div class="timeline-item">
+                        <span class="year">2022</span>
+                        <span class="desc"><i class="fas fa-award"></i> Won <strong>Innovator of the Year and introduce JEEPERS CREEPER-XMD</strong> award</span>
+                    </div>
+                    <div class="timeline-item">
+                        <span class="year">2024</span>
+                        <span class="desc"><i class="fas fa-globe"></i> Speaking at global tech conferences then introduce my chart bot ai</span>
+                    </div>
+                    <div class="timeline-item">
+                        <span class="year">2026</span>
+                        <span class="desc"><i class="fas fa-leaf"></i> Building the future — one line of code at a time</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== PHILOSOPHY ===== -->
+            <div class="dash-card glass">
+                <div class="section-title">
+                    <i class="fas fa-brain"></i> Philosophy
+                    <span class="accent-line"></span>
+                </div>
+                <div class="philosophy-block">
+                    “Technology should feel like nature — intuitive, alive, and in harmony with the human spirit.
+                    Every interface is a conversation, every line of code is a seed planted for tomorrow.”
+                    <span class="author">— Sir Bravin</span>
+                </div>
+            </div>
+
+            <!-- ===== PROJECTS ===== -->
+            <div class="dash-card glass">
+                <div class="section-title">
+                    <i class="fas fa-folder-open"></i> Signature Projects
+                    <span class="accent-line"></span>
+                </div>
+                <div class="project-grid">
+                    <div class="project-card">
+                        <span class="icon">🌱</span>
+                        <div class="name">EcoTech</div>
+                        <div class="desc">Sustainability platform</div>
+                    </div>
+                    <div class="project-card">
+                        <span class="icon">🧠</span>
+                        <div class="name">MindFlow</div>
+                        <div class="desc">Mental wellness app</div>
+                    </div>
+                    <div class="project-card">
+                        <span class="icon">🌊</span>
+                        <div class="name">AquaSense</div>
+                        <div class="desc">Water conservation</div>
+                    </div>
+                    <div class="project-card">
+                        <span class="icon">✨</span>
+                        <div class="name">Sir Bravin</div>
+                        <div class="desc">This very world</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== SKILLS ===== -->
+            <div class="dash-card glass">
+                <div class="section-title">
+                    <i class="fas fa-bolt"></i> Skills &amp; Expertise
+                    <span class="accent-line"></span>
+                </div>
+                <div class="skills-grid">
+                    <span class="skill-tag"><i class="fab fa-html5"></i> HTML5</span>
+                    <span class="skill-tag"><i class="fab fa-css3-alt"></i> CSS3</span>
+                    <span class="skill-tag"><i class="fab fa-js"></i> JavaScript</span>
+                    <span class="skill-tag"><i class="fab fa-react"></i> React</span>
+                    <span class="skill-tag"><i class="fab fa-node"></i> Node.js</span>
+                    <span class="skill-tag"><i class="fab fa-python"></i> Python</span>
+                    <span class="skill-tag"><i class="fas fa-database"></i> SQL</span>
+                    <span class="skill-tag"><i class="fas fa-cloud"></i> Cloud</span>
+                    <span class="skill-tag"><i class="fas fa-paint-brush"></i> UI/UX</span>
+                    <span class="skill-tag"><i class="fas fa-robot"></i> AI</span>
+                </div>
+            </div>
+
+            <!-- ===== SOCIAL & FOOTER ===== -->
+            <div class="dash-card glass">
+                <div class="section-title">
+                    <i class="fas fa-share-nodes"></i> Connect
+                    <span class="accent-line"></span>
+                </div>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-github"></i> GitHub</a>
+                    <a href="#"><i class="fab fa-twitter"></i> Twitter</a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i> LinkedIn</a>
+                    <a href="#"><i class="fab fa-youtube"></i> YouTube</a>
+                    <a href="#"><i class="fab fa-instagram"></i> Instagram</a>
+                </div>
+                <div class="footer-note">
+                    <i class="fas fa-heart"></i> Made with love by <strong>Sir Bravin</strong>
+                    &bull; <span id="current-year"></span>
+                    &bull; <i class="fas fa-tree" style="color:#34d399;"></i>
+                </div>
+            </div>
+
+        </div><!-- /dashboard -->
+    </div><!-- /app -->
+
+    <script>
+        // ============================================================
+        //  GLITTERING STARS
+        // ============================================================
+        (function() {
+            const canvas = document.getElementById('stars-canvas');
+            const ctx = canvas.getContext('2d');
+            let w, h;
+
+            function resize() {
+                w = canvas.width = window.innerWidth;
+                h = canvas.height = window.innerHeight;
+            }
+            window.addEventListener('resize', resize);
+            resize();
+
+            // Star class
+            class Star {
+                constructor() {
+                    this.reset(true); // true = random initial position
+                }
+
+                reset(initial = false) {
+                    // position
+                    if (initial) {
+                        this.x = Math.random() * w;
+                        this.y = Math.random() * h;
+                    } else {
+                        // respawn at a random edge
+                        const side = Math.floor(Math.random() * 4);
+                        if (side === 0) { // top
+                            this.x = Math.random() * w;
+                            this.y = -5;
+                        } else if (side === 1) { // right
+                            this.x = w + 5;
+                            this.y = Math.random() * h;
+                        } else if (side === 2) { // bottom
+                            this.x = Math.random() * w;
+                            this.y = h + 5;
+                        } else { // left
+                            this.x = -5;
+                            this.y = Math.random() * h;
+                        }
+                    }
+                    // size: 1-3px
+                    this.radius = 0.8 + Math.random() * 2.2;
+                    // brightness: 0.4 - 1.0
+                    this.baseOpacity = 0.4 + Math.random() * 0.6;
+                    // twinkle speed: 0.01 - 0.04
+                    this.twinkleSpeed = 0.008 + Math.random() * 0.035;
+                    // phase offset
+                    this.phase = Math.random() * Math.PI * 2;
+                    // velocity (drift)
+                    const angle = Math.random() * Math.PI * 2;
+                    const speed = 0.2 + Math.random() * 0.5; // pixels per frame
+                    this.vx = Math.cos(angle) * speed;
+                    this.vy = Math.sin(angle) * speed;
+                }
+
+                update() {
+                    this.x += this.vx;
+                    this.y += this.vy;
+                    this.phase += this.twinkleSpeed;
+                    // if out of bounds, reset
+                    if (this.x < -10 || this.x > w + 10 || this.y < -10 || this.y > h + 10) {
+                        this.reset(false);
+                    }
+                }
+
+                draw(ctx) {
+                    const opacity = this.baseOpacity * (0.7 + 0.3 * Math.sin(this.phase));
+                    const glow = this.radius * 2.5;
+                    // radial gradient for glowing effect
+                    const grad = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, glow);
+                    grad.addColorStop(0, `rgba(255, 255, 255, ${opacity})`);
+                    grad.addColorStop(0.4, `rgba(255, 255, 200, ${opacity * 0.6})`);
+                    grad.addColorStop(1, `rgba(255, 255, 200, 0)`);
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, glow, 0, Math.PI * 2);
+                    ctx.fillStyle = grad;
+                    ctx.fill();
+                    // tiny bright core
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.radius * 0.5, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(255, 255, 255, ${opacity * 0.9})`;
+                    ctx.fill();
+                }
+            }
+
+            // Create stars
+            const starCount = 200;
+            const stars = [];
+            for (let i = 0; i < starCount; i++) {
+                stars.push(new Star());
+            }
+
+            // Animation loop
+            function animate() {
+                ctx.clearRect(0, 0, w, h);
+                for (let star of stars) {
+                    star.update();
+                    star.draw(ctx);
+                }
+                requestAnimationFrame(animate);
+            }
+
+            animate();
+        })();
+
+        // ============================================================
+        //  DATA
+        // ============================================================
+        const VALID_CREDENTIALS = {
+            username: 'bravin',
+            password: 'love2025'
+        };
+
+        const DEFAULT_USERNAME = 'Sir Bravin';
+
+        // ============================================================
+        //  DOM REFS
+        // ============================================================
+        const signinCard = document.getElementById('signin-card');
+        const dashboard = document.getElementById('dashboard');
+        const signinForm = document.getElementById('signin-form');
+        const errorMsg = document.getElementById('error-msg');
+        const usernameInput = document.getElementById('username');
+        const passwordInput = document.getElementById('password');
+        const displayName = document.getElementById('display-name');
+        const avatarLetter = document.getElementById('avatar-letter');
+        const memberCountEl = document.getElementById('member-count');
+        const logoutBtn = document.getElementById('logout-btn');
+
+        // ============================================================
+        //  MEMBER COUNTER (localStorage based)
+        // ============================================================
+        const STORAGE_KEY = 'bravin_members_v2';
+
+        function getMemberCount() {
+            const raw = localStorage.getItem(STORAGE_KEY);
+            if (raw === null) return 0;
+            const num = parseInt(raw, 10);
+            return isNaN(num) ? 0 : num;
+        }
+
+        function setMemberCount(val) {
+            localStorage.setItem(STORAGE_KEY, String(val));
+        }
+
+        function incrementMembers() {
+            let current = getMemberCount();
+            if (current === 0) {
+                current = Math.floor(Math.random() * 150) + 100;
+            }
+            current += 1;
+            setMemberCount(current);
+            return current;
+        }
+
+        // ============================================================
+        //  ANIMATED COUNTER
+        // ============================================================
+        function animateCounter(target, element, duration = 800) {
+            const start = 0;
+            const startTime = performance.now();
+
+            function update(time) {
+                const elapsed = time - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                const eased = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
+                const current = Math.floor(eased * target);
+                element.textContent = current.toLocaleString();
+                if (progress < 1) {
+                    requestAnimationFrame(update);
+                } else {
+                    element.textContent = target.toLocaleString();
+                }
+            }
+            requestAnimationFrame(update);
+        }
+
+        // ============================================================
+        //  SHOW DASHBOARD
+        // ============================================================
+        function showDashboard(username) {
+            signinCard.classList.add('hidden');
+            dashboard.classList.add('active');
+
+            const name = username || DEFAULT_USERNAME;
+            displayName.textContent = name;
+            avatarLetter.textContent = name.charAt(0).toUpperCase();
+
+            const newCount = incrementMembers();
+            animateCounter(newCount, memberCountEl, 900);
+
+            sessionStorage.setItem('bravin_session_v2', 'true');
+        }
+
+        // ============================================================
+        //  HIDE DASHBOARD (logout)
+        // ============================================================
+        function hideDashboard() {
+            dashboard.classList.remove('active');
+            signinCard.classList.remove('hidden');
+            signinForm.reset();
+            errorMsg.textContent = '';
+            sessionStorage.removeItem('bravin_session_v2');
+        }
+
+        // ============================================================
+        //  SIGN-IN HANDLER
+        // ============================================================
+        signinForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            errorMsg.textContent = '';
+
+            const user = usernameInput.value.trim();
+            const pass = passwordInput.value.trim();
+
+            if (!user || !pass) {
+                errorMsg.textContent = '⚠️ Please fill in both fields.';
+                return;
+            }
+
+            const isAllowed = (user === VALID_CREDENTIALS.username && pass === VALID_CREDENTIALS.password) ||
+                (pass === VALID_CREDENTIALS.password && user.length >= 3);
+
+            if (isAllowed) {
+                showDashboard(user);
+            } else {
+                errorMsg.textContent = '❌ Invalid credentials. Try "bravin" / "love2025"';
+                document.querySelector('.btn-primary').classList.add('shake');
+                setTimeout(() => {
+                    document.querySelector('.btn-primary').classList.remove('shake');
+                }, 500);
+            }
+        });
+
+        // ============================================================
+        //  LOGOUT
+        // ============================================================
+        logoutBtn.addEventListener('click', hideDashboard);
+
+        // ============================================================
+        //  SESSION PERSISTENCE
+        // ============================================================
+        (function checkSession() {
+            if (sessionStorage.getItem('bravin_session_v2') === 'true') {
+                signinCard.classList.add('hidden');
+                dashboard.classList.add('active');
+                displayName.textContent = DEFAULT_USERNAME;
+                avatarLetter.textContent = DEFAULT_USERNAME.charAt(0);
+
+                let count = getMemberCount();
+                if (count === 0) {
+                    count = Math.floor(Math.random() * 150) + 100;
+                    setMemberCount(count);
+                }
+                memberCountEl.textContent = count.toLocaleString();
+            }
+        })();
+
+        // ============================================================
+        //  CURRENT YEAR
+        // ============================================================
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+
+        // ============================================================
+        //  ESCAPE TO LOGOUT
+        // ============================================================
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && dashboard.classList.contains('active')) {
+                hideDashboard();
+            }
+        });
+
+        console.log('🌿 Sir Bravin\'s World — built with nature & code');
+        console.log('✨ Glittering stars added for extra magic!');
+    </script>
+
+</body>
+</html>
