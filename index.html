@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Nexus — The Future of Connection</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet" />
+    <!-- Font Awesome 6 (Free) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <style>
+        /* ========== RESET & BASE ========== */
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #6C5CE7;
+            --primary-light: #A29BFE;
+            --primary-dark: #4834d4;
+            --secondary: #00CEC9;
+            --accent: #FD79A8;
+            --dark: #0c0c1d;
+            --dark-card: #13132b;
+            --gray: #8c8ca8;
+            --light: #f0f0f8;
+            --white: #ffffff;
+            --radius: 20px;
+            --shadow: 0 20px 60px rgba(108, 92, 231, 0.15);
+            --transition: 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--dark);
+            color: var(--light);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        img {
+            max-width: 100%;
+            display: block;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* ========== SCROLLBAR ========== */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--dark);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-light);
+        }
+
+        /* ========== UTILITY ========== */
+        .section-padding {
+            padding: 100px 0;
+        }
+
+        .badge {
+            display: inline-block;
+            background: rgba(108, 92, 231, 0.15);
+            color: var(--primary-light);
+            font-weight: 600;
+            font-size: 0.75rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            padding: 6px 16px;
+            border-radius: 50px;
+            border: 1px solid rgba(108, 92, 231, 0.25);
+            margin-bottom: 16px;
+        }
+
+        .section-title {
+            font-size: clamp(2rem, 5vw, 3.2rem);
+            font-weight: 800;
+            line-height: 1.15;
+            letter-spacing: -0.02em;
+        }
+
+        .section-title span {
+            background: linear-gradient(135deg, var(--primary-light), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .section-subtitle {
+            font-size: 1.1rem;
+            color: var(--gray);
+            max-width: 540px;
+            margin-top: 12px;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+        .text-center .section-subtitle {
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* ========== BUTTONS ========== */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 34px;
+            border-radius: 60px;
+            font-weight: 600;
+            font-size: 1rem;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+            background: var(--primary);
+            color: var(--white);
+            box-shadow: 0 8px 30px rgba(108, 92, 231, 0.3);
+        }
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 14px 40px rgba(108, 92, 231, 0.45);
+            background: var(--primary-dark);
+        }
+        .btn-outline {
+            background: transparent;
+            border: 2px solid rgba(255, 255, 255, 0.15);
+            box-shadow: none;
+            color: var(--white);
+        }
+        .btn-outline:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: var(--primary-light);
+            box-shadow: none;
+            transform: translateY(-3px);
+        }
+        .btn-secondary {
+            background: var(--secondary);
+            color: var(--dark);
+            box-shadow: 0 8px 30px rgba(0, 206, 201, 0.25);
+        }
+        .btn-secondary:hover {
+            background: #00b3b0;
+            box-shadow: 0 14px 40px rgba(0, 206, 201, 0.35);
+        }
+
+        /* ========== NAVBAR ========== */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 999;
+            padding: 18px 0;
+            transition: var(--transition);
+            backdrop-filter: blur(0px);
+            background: transparent;
+        }
+        .navbar.scrolled {
+            background: rgba(12, 12, 29, 0.85);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 12px 0;
+        }
+        .navbar .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .logo {
+            font-size: 1.6rem;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .logo i {
+            color: var(--primary-light);
+            font-size: 1.8rem;
+        }
+        .logo span {
+            background: linear-gradient(135deg, var(--primary-light), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 36px;
+            list-style: none;
+        }
+        .nav-links a {
+            font-weight: 500;
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.7);
+            transition: var(--transition);
+            position: relative;
+        }
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary-light);
+            transition: var(--transition);
+        }
+        .nav-links a:hover {
+            color: var(--white);
+        }
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        .nav-cta {
+            padding: 10px 26px;
+            font-size: 0.85rem;
+        }
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 4px;
+        }
+        .hamburger span {
+            display: block;
+            width: 26px;
+            height: 2.5px;
+            background: var(--white);
+            border-radius: 4px;
+            transition: var(--transition);
+            transform-origin: center;
+        }
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(5px, -5px);
+        }
+
+        /* ========== HERO ========== */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            padding-top: 80px;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -40%;
+            right: -20%;
+            width: 700px;
+            height: 700px;
+            background: radial-gradient(circle, rgba(108, 92, 231, 0.15) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: -30%;
+            left: -15%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(0, 206, 201, 0.10) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+        .hero .container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+        .hero-content {
+            animation: fadeUp 0.8s ease forwards;
+        }
+        .hero-content .badge {
+            animation: fadeUp 0.8s 0.1s ease forwards;
+            opacity: 0;
+        }
+        .hero-content h1 {
+            font-size: clamp(2.8rem, 6vw, 4.4rem);
+            font-weight: 800;
+            line-height: 1.08;
+            letter-spacing: -0.03em;
+            margin: 16px 0;
+        }
+        .hero-content h1 span {
+            background: linear-gradient(135deg, var(--primary-light), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .hero-content p {
+            font-size: 1.2rem;
+            color: var(--gray);
+            max-width: 480px;
+            margin: 20px 0 36px;
+        }
+        .hero-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+        .hero-stats {
+            display: flex;
+            gap: 48px;
+            margin-top: 48px;
+            padding-top: 32px;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+        }
+        .hero-stats .stat h3 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary-light), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .hero-stats .stat p {
+            font-size: 0.85rem;
+            color: var(--gray);
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Hero Visual */
+        .hero-visual {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: fadeUp 0.8s 0.2s ease forwards;
+            opacity: 0;
+        }
+        .hero-visual .orb {
+            width: 380px;
+            height: 380px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            position: relative;
+            box-shadow: 0 0 100px rgba(108, 92, 231, 0.25);
+            animation: float 6s ease-in-out infinite;
+        }
+        .hero-visual .orb::before {
+            content: '';
+            position: absolute;
+            inset: 12px;
+            border-radius: 50%;
+            background: var(--dark);
+            border: 2px solid rgba(255, 255, 255, 0.05);
+        }
+        .hero-visual .orb .icon-grid {
+            position: absolute;
+            inset: 0;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+            padding: 30px;
+            gap: 8px;
+        }
+        .hero-visual .orb .icon-grid .cell {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            color: rgba(255, 255, 255, 0.2);
+            transition: var(--transition);
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.02);
+        }
+        .hero-visual .orb .icon-grid .cell:hover {
+            color: var(--white);
+            background: rgba(255, 255, 255, 0.06);
+        }
+        .hero-visual .orb .icon-grid .cell i {
+            font-size: 2rem;
+        }
+
+        /* ========== FLOATING ANIMATIONS ========== */
+        @keyframes float {
+            0%,
+            100% {
+                transform: translateY(0px) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-20px) rotate(2deg);
+            }
+        }
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ========== FEATURES ========== */
+        .features {
+            background: var(--dark-card);
+        }
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+        .feature-card {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 36px 28px;
+            border-radius: var(--radius);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            opacity: 0;
+            transition: var(--transition);
+        }
+        .feature-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(108, 92, 231, 0.2);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+        }
+        .feature-card:hover::before {
+            opacity: 1;
+        }
+        .feature-card .icon {
+            font-size: 2.4rem;
+            color: var(--primary-light);
+            margin-bottom: 18px;
+            display: inline-block;
+        }
+        .feature-card h3 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        .feature-card p {
+            color: var(--gray);
+            font-size: 0.95rem;
+        }
+
+        /* ========== TESTIMONIALS ========== */
+        .testimonials {
+            background: var(--dark);
+        }
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+        .testimonial-card {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 32px 28px;
+            border-radius: var(--radius);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            transition: var(--transition);
+        }
+        .testimonial-card:hover {
+            border-color: rgba(108, 92, 231, 0.2);
+            transform: translateY(-4px);
+        }
+        .testimonial-card .stars {
+            color: #f9ca24;
+            margin-bottom: 16px;
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+        }
+        .testimonial-card blockquote {
+            font-size: 1rem;
+            line-height: 1.7;
+            color: rgba(255, 255, 255, 0.85);
+            font-style: italic;
+            margin-bottom: 18px;
+        }
+        .testimonial-card .author {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+        .testimonial-card .author .avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--white);
+        }
+        .testimonial-card .author .info h4 {
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+        .testimonial-card .author .info p {
+            font-size: 0.8rem;
+            color: var(--gray);
+        }
+
+        /* ========== CTA ========== */
+        .cta {
+            background: var(--dark-card);
+            position: relative;
+            overflow: hidden;
+        }
+        .cta::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(108, 92, 231, 0.08) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+        .cta-box {
+            background: linear-gradient(135deg, rgba(108, 92, 231, 0.10), rgba(0, 206, 201, 0.05));
+            border-radius: var(--radius);
+            padding: 60px 48px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        .cta-box h2 {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 800;
+            max-width: 700px;
+        }
+        .cta-box h2 span {
+            background: linear-gradient(135deg, var(--primary-light), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .cta-box p {
+            color: var(--gray);
+            max-width: 500px;
+            margin: 16px 0 32px;
+            font-size: 1.1rem;
+        }
+        .cta-box .btn-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            justify-content: center;
+        }
+
+        /* ========== FOOTER ========== */
+        .footer {
+            background: var(--dark);
+            border-top: 1px solid rgba(255, 255, 255, 0.04);
+            padding: 48px 0 30px;
+        }
+        .footer .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 24px;
+        }
+        .footer .logo {
+            font-size: 1.3rem;
+        }
+        .footer p {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+        .footer-socials {
+            display: flex;
+            gap: 18px;
+        }
+        .footer-socials a {
+            color: var(--gray);
+            font-size: 1.2rem;
+            transition: var(--transition);
+        }
+        .footer-socials a:hover {
+            color: var(--primary-light);
+            transform: translateY(-2px);
+        }
+
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 992px) {
+            .hero .container {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            .hero-content p {
+                margin-left: auto;
+                margin-right: auto;
+            }
+            .hero-buttons {
+                justify-content: center;
+            }
+            .hero-stats {
+                justify-content: center;
+            }
+            .hero-visual .orb {
+                width: 280px;
+                height: 280px;
+            }
+            .hero-visual .orb .icon-grid .cell i {
+                font-size: 1.4rem;
+            }
+            .hero-visual .orb .icon-grid {
+                padding: 20px;
+                gap: 4px;
+            }
+            .cta-box {
+                padding: 40px 24px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 280px;
+                height: 100vh;
+                background: var(--dark-card);
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 24px;
+                transition: var(--transition);
+                border-left: 1px solid rgba(255, 255, 255, 0.05);
+                padding: 40px;
+            }
+            .nav-links.open {
+                right: 0;
+            }
+            .hamburger {
+                display: flex;
+                z-index: 1000;
+            }
+            .nav-cta {
+                display: none;
+            }
+            .hero {
+                min-height: auto;
+                padding: 120px 0 60px;
+            }
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+            .hero-stats {
+                gap: 24px;
+                flex-wrap: wrap;
+            }
+            .section-padding {
+                padding: 60px 0;
+            }
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+            .testimonials-grid {
+                grid-template-columns: 1fr;
+            }
+            .footer .container {
+                flex-direction: column;
+                text-align: center;
+            }
+            .hero-visual .orb {
+                width: 200px;
+                height: 200px;
+            }
+            .hero-visual .orb .icon-grid .cell i {
+                font-size: 1rem;
+            }
+            .hero-visual .orb .icon-grid {
+                padding: 12px;
+                gap: 2px;
+            }
+            .cta-box .btn-group {
+                flex-direction: column;
+                align-items: center;
+            }
+            .cta-box .btn-group .btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-content h1 {
+                font-size: 2rem;
+            }
+            .hero-stats .stat h3 {
+                font-size: 1.4rem;
+            }
+            .container {
+                padding: 0 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ========== NAVBAR ========== -->
+    <nav class="navbar" id="navbar">
+        <div class="container">
+            <a href="#" class="logo">
+                <i class="fas fa-bolt"></i>
+                <span>Nexus</span>
+            </a>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#features">Features</a></li>
+                <li><a href="#testimonials">Testimonials</a></li>
+                <li><a href="#cta">Get Started</a></li>
+                <li><a href="#" class="btn btn-outline nav-cta">Sign In</a></li>
+            </ul>
+            <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- ========== HERO ========== -->
+    <section class="hero" id="hero">
+        <div class="container">
+            <div class="hero-content">
+                <span class="badge"><i class="fas fa-rocket" style="margin-right: 6px;"></i> Launching 2026</span>
+                <h1>Build the future <br /><span>together</span></h1>
+                <p>
+                    sir bravin brings teams, ideas, and tools into one seamless space.
+                    Collaborate in real time, ship faster, and love every moment.
+                </p>
+                <div class="hero-buttons">
+                    <a href="#cta" class="btn"><i class="fas fa-arrow-right"></i> Start Free Trial</a>
+                    <a href="#features" class="btn btn-outline"><i class="fas fa-play-circle"></i> Explore</a>
+                </div>
+                <div class="hero-stats">
+                    <div class="stat">
+                        <h3>12k+</h3>
+                        <p>Active teams</p>
+                    </div>
+                    <div class="stat">
+                        <h3>98%</h3>
+                        <p>Satisfaction</p>
+                    </div>
+                    <div class="stat">
+                        <h3>4.9★</h3>
+                        <p>User rating</p>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="orb">
+                    <div class="icon-grid">
+                        <div class="cell"><i class="fas fa-code"></i></div>
+                        <div class="cell"><i class="fas fa-cloud"></i></div>
+                        <div class="cell"><i class="fas fa-database"></i></div>
+                        <div class="cell"><i class="fas fa-lock"></i></div>
+                        <div class="cell"><i class="fas fa-bolt"></i></div>
+                        <div class="cell"><i class="fas fa-users"></i></div>
+                        <div class="cell"><i class="fas fa-robot"></i></div>
+                        <div class="cell"><i class="fas fa-chart-line"></i></div>
+                        <div class="cell"><i class="fas fa-rocket"></i></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== FEATURES ========== -->
+    <section class="features section-padding" id="features">
+        <div class="container">
+            <div class="text-center">
+                <span class="badge"><i class="fas fa-heart" style="margin-right: 6px;"></i> Why sir bravin</span>
+                <h2 class="section-title">Everything you need to <span>succeed</span></h2>
+                <p class="section-subtitle">
+                    From real-time collaboration to powerful automations — sir bravin
+                    is designed to make your work flow.
+                </p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="icon"><i class="fas fa-bolt"></i></div>
+                    <h3>Lightning Fast</h3>
+                    <p>Real-time updates with zero lag. Your team stays in sync, no matter where they are.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon"><i class="fas fa-shield-alt"></i></div>
+                    <h3>Bank‑Grade Security</h3>
+                    <p>End‑to‑end encryption and enterprise‑grade compliance. Your data is always safe.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon"><i class="fas fa-puzzle-piece"></i></div>
+                    <h3>Seamless Integrations</h3>
+                    <p>Connect with 200+ tools — Slack, Figma, GitHub, and more — in one click.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon"><i class="fas fa-robot"></i></div>
+                    <h3>AI‑Powered Insights</h3>
+                    <p>Smart suggestions, automated workflows, and predictive analytics to keep you ahead.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon"><i class="fas fa-mobile-alt"></i></div>
+                    <h3>Mobile First</h3>
+                    <p>Full‑featured mobile apps for iOS and Android. Work from anywhere, anytime.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon"><i class="fas fa-headset"></i></div>
+                    <h3>24/7 Support</h3>
+                    <p>Our dedicated support team is always here to help. Real humans, real fast.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== TESTIMONIALS ========== -->
+    <section class="testimonials section-padding" id="testimonials">
+        <div class="container">
+            <div class="text-center">
+                <span class="badge"><i class="fas fa-star" style="margin-right: 6px;"></i> Loved by teams</span>
+                <h2 class="section-title">What our users <span>say</span></h2>
+                <p class="section-subtitle">
+                    Thousands of teams trust sir bravin to ship better products, faster.
+                </p>
+            </div>
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <div class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                    <blockquote>
+                        “sir bravin completely transformed how our distributed team collaborates.
+                        We're shipping 2x faster and everyone loves the experience.”
+                    </blockquote>
+                    <div class="author">
+                        <div class="avatar">JD</div>
+                        <div class="info">
+                            <h4>Jessica Diaz</h4>
+                            <p>VP of Engineering, Stellar</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                    <blockquote>
+                        “The AI insights alone saved us dozens of hours last quarter.
+                        sir bravin is the best investment we've made in our workflow.”
+                    </blockquote>
+                    <div class="author">
+                        <div class="avatar">MC</div>
+                        <div class="info">
+                            <h4>Marcus Chen</h4>
+                            <p>CTO, Lumina Labs</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                    <blockquote>
+                        “Our entire company switched to sir bravin in under a week.
+                        The onboarding was seamless and the support is outstanding.”
+                    </blockquote>
+                    <div class="author">
+                        <div class="avatar">AR</div>
+                        <div class="info">
+                            <h4>Alicia Rivera</h4>
+                            <p>COO, CloudPeak</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== CTA ========== -->
+    <section class="cta section-padding" id="cta">
+        <div class="container">
+            <div class="cta-box">
+                <span class="badge"><i class="fas fa-gem" style="margin-right: 6px;"></i> Get started today</span>
+                <h2>Ready to build something <span>amazing</span>?</h2>
+                <p>Join thousands of teams already using sir bravin to bring their ideas to life. Start your free trial today.</p>
+                <div class="btn-group">
+                    <a href="#" class="btn btn-secondary"><i class="fas fa-arrow-right"></i> Start Free Trial</a>
+                    <a href="#" class="btn btn-outline"><i class="fas fa-calendar-alt"></i> Book a Demo</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== FOOTER ========== -->
+    <footer class="footer">
+        <div class="container">
+            <a href="#" class="logo">
+                <i class="fas fa-bolt"></i>
+                <span>sir bravin</span>
+            </a>
+            <p>&copy; 2026 sir bravin, Inc. All rights reserved.</p>
+            <div class="footer-socials">
+                <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                <a href="#" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ========== JAVASCRIPT ========== -->
+    <script>
+        // --- Navbar scroll effect ---
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 40) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // --- Mobile hamburger ---
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.getElementById('navLinks');
+
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('open');
+        });
+
+        // Close menu on link click (mobile)
+        navLinks.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                navLinks.classList.remove('open');
+            });
+        });
+
+        // --- Smooth reveal on scroll (Intersection Observer) ---
+        const revealElements = document.querySelectorAll('.feature-card, .testimonial-card');
+
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, {
+            threshold: 0.15,
+            rootMargin: '0px 0px -30px 0px'
+        });
+
+        revealElements.forEach((el, i) => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = `opacity 0.6s ${i * 0.08}s ease, transform 0.6s ${i * 0.08}s ease`;
+            revealObserver.observe(el);
+        });
+
+        // --- Also observe hero stats for a nice reveal ---
+        const heroStats = document.querySelector('.hero-stats');
+        if (heroStats) {
+            heroStats.style.opacity = '0';
+            heroStats.style.transform = 'translateY(20px)';
+            heroStats.style.transition = 'opacity 0.8s 0.4s ease, transform 0.8s 0.4s ease';
+            setTimeout(() => {
+                heroStats.style.opacity = '1';
+                heroStats.style.transform = 'translateY(0)';
+            }, 300);
+        }
+
+        console.log('🚀 sir bravin — built with love for the future.');
+    </script>
+</body>
+</html>
